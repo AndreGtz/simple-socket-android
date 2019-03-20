@@ -16,9 +16,9 @@ const serveCommands = net.createServer((socket) => {
         uri: serverurl,
         body: {
           imei,
-          latitud,
-          longitud,
-          velocidad,
+          latitud: parseFloat(latitud),
+          longitud: parseFloat(longitud),
+          velocidad: parseFloat(velocidad),
         },
         json: true,
         headers: {
