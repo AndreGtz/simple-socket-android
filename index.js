@@ -31,8 +31,8 @@ const serveCommands = net.createServer((socket) => {
         .catch((err) => {
           console.error(err);
         });
-    } else {
-      token = data;
+    } else if (/@.*$/.test(data)) {
+      token = data.substring(1);
     }
   });
 
