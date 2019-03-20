@@ -29,7 +29,7 @@ const serveCommands = net.createServer((socket) => {
           console.info('saved');
         })
         .catch((err) => {
-          console.err(err);
+          console.error(err);
         });
     } else {
       token = data;
