@@ -9,8 +9,9 @@ const serveCommands = net.createServer((socket) => {
 
   socket.on('data', (data) => {
     console.info(data);
-    if (/^#.*/.test(data)) {
-      const [imei, latitud, longitud, velocidad] = data.substring(1).split(',');
+    if (/#.*$/.test(data)) {
+      const index = data.indexOf('#') + 1;
+      const [imei, latitud, longitud, velocidad] = data.substring(index).split(',');
       request({
         method: 'POST',
         uri: serverurl,
