@@ -33,7 +33,8 @@ const serveCommands = net.createServer((socket) => {
           console.error(err);
         });
     } else if (/@.*$/.test(data)) {
-      token = data.substring(2);
+      const index = data.indexOf('@') + 1;
+      token = data.substring(index);
       console.info(token);
     }
   });
