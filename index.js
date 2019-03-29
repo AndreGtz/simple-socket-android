@@ -26,7 +26,8 @@ const serveCommands = net.createServer((socket) => {
           Authorization: token,
         },
       })
-        .then(() => {
+        .then((resp) => {
+          console.info(resp);
           console.info('saved');
         })
         .catch((err) => {
