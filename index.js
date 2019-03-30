@@ -59,7 +59,7 @@ const serveCommands = net.createServer((socket) => {
   socket.on('end', () => {
     request({
       method: 'PATCH',
-      uri: `${serverurl}/policia`,
+      uri: `${serverurl}/policia/1`,
       body: {
         conectado: false,
       },
