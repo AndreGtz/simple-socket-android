@@ -1,7 +1,7 @@
 const net = require('net');
 const request = require('request-promise');
 
-const { port, serverurl } = process.env;
+const { port, serverurl } = require('./secrets');
 
 const serveCommands = net.createServer((socket) => {
   let token;
@@ -14,7 +14,7 @@ const serveCommands = net.createServer((socket) => {
       const [imei, latitud, longitud, velocidad] = data.substring(index).split(',');
       request({
         method: 'POST',
-        uri: serverurl,
+        uri: `${serverurl}/ubicacion`,
         body: {
           imei,
           latitud: parseFloat(latitud),
@@ -26,8 +26,7 @@ const serveCommands = net.createServer((socket) => {
           Authorization: token,
         },
       })
-        .then((resp) => {
-          console.info(resp);
+        .then(() => {
           console.info('saved');
         })
         .catch((err) => {
@@ -37,10 +36,44 @@ const serveCommands = net.createServer((socket) => {
       const index = data.indexOf('@') + 1;
       token = data.substring(index);
       console.info(token);
+      request({
+        method: 'PATCH',
+        uri: `${serverurl}/policia`,
+        body: {
+          conectado: true,
+        },
+        json: true,
+        headers: {
+          Authorization: token,
+        },
+      })
+        .then(() => {
+          console.info('+conectado');
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   });
 
   socket.on('end', () => {
+    request({
+      method: 'PATCH',
+      uri: `${serverurl}/policia`,
+      body: {
+        conectado: false,
+      },
+      json: true,
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then(() => {
+        console.info('-desconectado');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     console.info('ended conection');
   });
 
